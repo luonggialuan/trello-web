@@ -35,7 +35,7 @@ function Profiles() {
             <Avatar
               sx={{ width: 36, height: 36 }}
               alt="luonggialuan"
-              src="https://scontent.fsgn2-7.fna.fbcdn.net/v/t39.30808-1/411496173_2394469967429423_8977748475840364687_n.jpg?stp=dst-jpg_p320x320&_nc_cat=108&ccb=1-7&_nc_sid=5740b7&_nc_ohc=DvHYTJ89IYoAX_RVMA6&_nc_ht=scontent.fsgn2-7.fna&oh=00_AfB4L0pZQPZOp5qdkCZ1KyYYacluemxOVAIQvTDBQquixA&oe=65E26FAA"
+              src="image-1.jpg"
             />
           </IconButton>
         </Tooltip>
