@@ -9,6 +9,8 @@ import {
   createNewColumnAPI,
   createNewCardAPI
 } from '~/api'
+import { generatePlaceholderCard } from '~/utils/formatters'
+import { isEmpty } from 'lodash'
 
 function Board() {
   const [board, setBoard] = useState(null)
@@ -19,6 +21,13 @@ function Board() {
 
     // Call API
     fecthBoardDetailAPI(boardId).then((board) => {
+      // Cần xử lý vấn đề kéo thả vào một column rỗng
+      board.columns.forEach((column) => {
+        if (isEmpty(column.cards)) {
+          column.cards = [generatePlaceholderCard(column)]
+          column.cardOrderIds = [generatePlaceholderCard(column)._id]
+        }
+      })
       setBoard(board)
     })
   }, [])
@@ -30,7 +39,16 @@ function Board() {
       boardId: board._id
     })
 
+    // Khi tạo column mới thì nó sẽ chưa có card, cần xử lý vấn đề kéo thả vào một column rỗng
+    createdColumn.cards = [generatePlaceholderCard(createdColumn)]
+    createdColumn.cardOrderIds = [generatePlaceholderCard(createdColumn)._id]
+
     // Cập nhật lại state board
+    // Phía Font-end tự làm lại đúng state data board thay vì phải gọi lại api
+    const newBoard = { ...board }
+    newBoard.columns.push(createdColumn)
+    newBoard.columnOrderIds.push(createdColumn._id)
+    setBoard(newBoard)
   }
 
   // Gọi API tạo mới Card và làm lại dữ liệu State Board
@@ -41,6 +59,16 @@ function Board() {
     })
 
     // Cập nhật lại state board
+    const newBoard = { ...board }
+    const columnToUpdate = newBoard.columns.find(
+      (column) => column._id === createdCard.columnId
+    )
+
+    if (columnToUpdate) {
+      columnToUpdate.cards.push(createdCard)
+      columnToUpdate.cardOrderIds.push(createdCard._id)
+    }
+    setBoard(newBoard)
   }
 
   return (
