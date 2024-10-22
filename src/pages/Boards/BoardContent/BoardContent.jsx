@@ -31,7 +31,7 @@ const ACTIVE_DRAG_ITEM_TYPE = {
   CARD: 'ACTIVE_DRAG_ITEM_TYPE_CARD'
 }
 
-function BoardContent({ board, createNewColumn, createNewCard }) {
+function BoardContent({ board, createNewColumn, createNewCard, moveColumns }) {
   // https://docs.dndkit.com/api-documentation/sensors
   // Nếu dùng PointerSensor mặc định thì phải kết hợp thuộc tính CSS touch-action: none ở những phần tử kéo thả - nhưng còn bug
   // const pointerSensor = useSensor(PointerSensor, {
@@ -318,8 +318,11 @@ function BoardContent({ board, createNewColumn, createNewCard }) {
           oldColumnIndex,
           newColumnIndex
         )
-        // const dndOrderedColumnsIds = dndOrderedColumns.map((c) => c._id)
 
+        // Gọi lên props function moveColumns nằm ở component cha cao nhất boards/_id.jsx
+        moveColumns(dndOrderedColumns)
+
+        // Vẫn cập nhật ở đây để tránh bị deplay hoặc flickering giao diện lúc kéo thả cần phải chờ gọi api
         // Cập nhật lại state columns ban đầu sau khi kéo thả
         setOrderedColumns(dndOrderedColumns)
       }
