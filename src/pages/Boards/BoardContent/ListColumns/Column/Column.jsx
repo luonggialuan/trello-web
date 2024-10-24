@@ -22,6 +22,7 @@ import TextField from '@mui/material/TextField'
 import CloseIcon from '@mui/icons-material/Close'
 import { toast } from 'react-toastify'
 import { useConfirm } from 'material-ui-confirm'
+import LoadingCreateCard from './ListCards/Card/LoadingCreateCard'
 
 function Column({ column, createNewCard, deleteColumn }) {
   const {
@@ -41,6 +42,7 @@ function Column({ column, createNewCard, deleteColumn }) {
     height: '100%',
     opacity: isDragging ? 0.5 : undefined
   }
+  const [isLoadingCreate, setIsLoadingCreate] = useState(false)
 
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
@@ -59,7 +61,8 @@ function Column({ column, createNewCard, deleteColumn }) {
 
   const [newCardTitle, setNewCardTitle] = useState('')
 
-  const addNewCard = () => {
+  const addNewCard = async () => {
+    setIsLoadingCreate(true)
     if (!newCardTitle) {
       toast.error('Please enter Card title', { position: 'bottom-right' })
       return
@@ -70,13 +73,14 @@ function Column({ column, createNewCard, deleteColumn }) {
       title: newCardTitle,
       columnId: column._id
     }
-
-    // Dùng Redux để có thể dùng API luôn ở đây
-    createNewCard(newCardData)
-
     // Đóng trạng thái thêm Card mới & Clear Input
     toggleOpenNewCardForm()
     setNewCardTitle('')
+
+    // Dùng Redux để có thể dùng API luôn ở đây
+    await createNewCard(newCardData)
+
+    setIsLoadingCreate(false)
   }
 
   // Xóa Column và Cards bên trong nó
@@ -220,6 +224,10 @@ function Column({ column, createNewCard, deleteColumn }) {
         </Box>
         {/* List Cards  */}
         <ListCards cards={orderedCards} />
+
+        {/* Loading... create new card */}
+        {isLoadingCreate && <LoadingCreateCard />}
+
         {/* Box Column Footer */}
         <Box
           sx={{

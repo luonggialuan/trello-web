@@ -10,6 +10,7 @@ import { useState } from 'react'
 import { toast } from 'react-toastify'
 import TextField from '@mui/material/TextField'
 import CloseIcon from '@mui/icons-material/Close'
+import LoadingCreateColumn from './Column/LoadingCreateColumn'
 
 function ListColumns({
   columns,
@@ -21,8 +22,10 @@ function ListColumns({
   const toggleOpenNewColumnForm = () => setOpenNewColumnForm(!openNewColumnForm)
 
   const [newColumnTitle, setNewColumnTitle] = useState('')
+  const [isLoadingCreate, setIsLoadingCreate] = useState(false)
 
-  const addNewColumn = () => {
+  const addNewColumn = async () => {
+    setIsLoadingCreate(true)
     if (!newColumnTitle) {
       toast.error('Please enter column title')
       return
@@ -32,13 +35,14 @@ function ListColumns({
     const newColumnData = {
       title: newColumnTitle
     }
-
-    // Dùng Redux để có thể dùng API luôn ở đây
-    createNewColumn(newColumnData)
-
     // Đóng trạng thái thêm Column mới & Clear Input
     toggleOpenNewColumnForm()
     setNewColumnTitle('')
+
+    // Dùng Redux để có thể dùng API luôn ở đây
+    await createNewColumn(newColumnData)
+
+    setIsLoadingCreate(false)
   }
   // The <SortableContext> component requires that you pass it the sorted array of the unique identifiers associated to each sortable item via the items prop. This array should look like ["1", "2", "3"], not [{id: "1"}, {id: "2}, {id: "3}].
   // https://github.com/clauderic/dnd-kit/issues/183#issuecomment-812569512
@@ -66,6 +70,9 @@ function ListColumns({
             deleteColumn={deleteColumn}
           />
         ))}
+
+        {/* Loading... create new column */}
+        {isLoadingCreate && <LoadingCreateColumn />}
 
         {/* Box Add new colum */}
         {!openNewColumnForm ? (
