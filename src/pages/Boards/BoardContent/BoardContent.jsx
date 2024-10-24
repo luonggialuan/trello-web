@@ -35,7 +35,8 @@ function BoardContent({
   createNewColumn,
   createNewCard,
   moveColumns,
-  moveCardsInTheSameColumn
+  moveCardInTheSameColumn,
+  moveCardInDifferentColumn
 }) {
   // https://docs.dndkit.com/api-documentation/sensors
   // Nếu dùng PointerSensor mặc định thì phải kết hợp thuộc tính CSS touch-action: none ở những phần tử kéo thả - nhưng còn bug
@@ -87,7 +88,8 @@ function BoardContent({
     over,
     activeColumn,
     activeDraggingCardId,
-    activeDraggingCardData
+    activeDraggingCardData,
+    triggerFrom
   ) => {
     setOrderedColumns((prevColumns) => {
       // Tìm vị trí của cái overCard trong column đích (nơi card sắp được thả)
@@ -167,7 +169,16 @@ function BoardContent({
           (card) => card._id
         )
       }
-      // console.log(nextColumns)
+
+      // Gọi api sau khi kéo thả xong, nếu func được gọi từ handleDragEnd
+      if (triggerFrom === 'handleDragEnd') {
+        moveCardInDifferentColumn(
+          activeDraggingCardId,
+          oldColumnDraggingCard._id,
+          nextOverColumn._id,
+          nextColumns
+        )
+      }
 
       return nextColumns
     })
@@ -223,7 +234,8 @@ function BoardContent({
         over,
         activeColumn,
         activeDraggingCardId,
-        activeDraggingCardData
+        activeDraggingCardData,
+        'handleDragOver'
       )
     }
   }
@@ -266,7 +278,8 @@ function BoardContent({
           over,
           activeColumn,
           activeDraggingCardId,
-          activeDraggingCardData
+          activeDraggingCardData,
+          'handleDragEnd'
         )
       } else {
         // Hành động kéo thả card trong cùng một column
@@ -304,8 +317,8 @@ function BoardContent({
           return nextColumns
         })
 
-        // Gọi lên props function moveCardsInTheSameColumn nằm ở component cha cao nhất boards/_id.jsx
-        moveCardsInTheSameColumn(
+        // Gọi lên props function moveCardInTheSameColumn nằm ở component cha cao nhất boards/_id.jsx
+        moveCardInTheSameColumn(
           dndOrderedCards,
           dndOrderedCardIds,
           oldColumnDraggingCard._id
