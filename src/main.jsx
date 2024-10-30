@@ -12,8 +12,12 @@ import 'react-toastify/dist/ReactToastify.css'
 // Cấu hình MUI confirm dialog
 import { ConfirmProvider } from 'material-ui-confirm'
 
+// Cấu hình Redux Store
+import { Provider } from 'react-redux'
+import { store } from '~/redux/store'
+
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <>
+  <Provider store={store}>
     <CssVarsProvider theme={theme}>
       <ConfirmProvider
         defaultOptions={{
@@ -31,5 +35,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <ToastContainer position="bottom-left" theme="colored" />
       </ConfirmProvider>
     </CssVarsProvider>
-  </>
+  </Provider>
 )
