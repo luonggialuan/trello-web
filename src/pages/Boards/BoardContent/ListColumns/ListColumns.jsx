@@ -11,13 +11,19 @@ import { toast } from 'react-toastify'
 import TextField from '@mui/material/TextField'
 import CloseIcon from '@mui/icons-material/Close'
 import LoadingCreateColumn from './Column/LoadingCreateColumn'
+import { createNewColumnAPI } from '~/api'
+import { generatePlaceholderCard } from '~/utils/formatters'
+import { cloneDeep } from 'lodash'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  selectCurrentActiveBoard,
+  updateCurrentActiveBoard
+} from '~/redux/activeBoard/activeBoardSlice'
 
-function ListColumns({
-  columns,
-  createNewColumn,
-  createNewCard,
-  deleteColumn
-}) {
+function ListColumns({ columns }) {
+  const dispatch = useDispatch()
+  const board = useSelector(selectCurrentActiveBoard)
+
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false)
   const toggleOpenNewColumnForm = () => setOpenNewColumnForm(!openNewColumnForm)
 
@@ -39,8 +45,40 @@ function ListColumns({
     toggleOpenNewColumnForm()
     setNewColumnTitle('')
 
-    // Dùng Redux để có thể dùng API luôn ở đây
-    await createNewColumn(newColumnData)
+    // Gọi API tạo mới Column và làm lại dữ liệu State Board
+    const createdColumn = await createNewColumnAPI({
+      ...newColumnData,
+      boardId: board._id
+    })
+
+    // Khi tạo column mới thì nó sẽ chưa có card, cần xử lý vấn đề kéo thả vào một column rỗng
+    createdColumn.cards = [generatePlaceholderCard(createdColumn)]
+    createdColumn.cardOrderIds = [generatePlaceholderCard(createdColumn)._id]
+
+    // Cập nhật lại state board
+    // Phía Font-end tự làm lại đúng state data board thay vì phải gọi lại api
+
+    // Error: object is not extensible
+    // spread operator => Shallow Copy/Clone =x rules Immutability trong Redux Toolkit => can not use push
+    // https://stackoverflow.com/questions/184710/what-is-the-difference-between-a-deep-copy-and-a-shallow-copy
+    // https://redux-toolkit.js.org/usage/immer-reducers
+    // https://redux.js.org/tutorials/fundamentals/part-6-async-logic
+    // const newBoard = { ...board }
+    // * C1: use cloneDeep of lodash
+    const newBoard = cloneDeep(board)
+    newBoard.columns.push(createdColumn)
+    newBoard.columnOrderIds.push(createdColumn._id)
+
+    // * C2: use array.concat thay cho push
+    // * push thay đổi mảng trực tiếp
+    // * concat merge - ghép mảng lại => tạo mảng mới
+    // const newBoard = cloneDeep(board)
+    // newBoard.columns = newBoard.columns.concat([createdColumn])
+    // newBoard.columnOrderIds = newBoard.columnOrderIds.concat([
+    //   createdColumn._id
+    // ])
+
+    dispatch(updateCurrentActiveBoard(newBoard))
 
     setIsLoadingCreate(false)
   }
@@ -63,12 +101,7 @@ function ListColumns({
         }}
       >
         {columns?.map((column) => (
-          <Column
-            key={column._id}
-            column={column}
-            createNewCard={createNewCard}
-            deleteColumn={deleteColumn}
-          />
+          <Column key={column._id} column={column} />
         ))}
 
         {/* Loading... create new column */}

@@ -8,11 +8,12 @@ import { API_ROOT } from '~/utils/constants'
 // Interceptors đánh chặn vào giữa request và response để xử lý logic mà chúng ta muốn
 
 // Boards
-export const fecthBoardDetailAPI = async (boardId) => {
-  const response = await axios.get(`${API_ROOT}/v1/boards/${boardId}`)
-  // axios trả về kết quả về qua property của nó là data
-  return response.data
-}
+// * moved to Redux
+// export const fecthBoardDetailAPI = async (boardId) => {
+//   const response = await axios.get(`${API_ROOT}/v1/boards/${boardId}`)
+//   // axios trả về kết quả về qua property của nó là data
+//   return response.data
+// }
 
 export const updateBoardDetailAPI = async (boardId, updateData) => {
   const response = await axios.put(
