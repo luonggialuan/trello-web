@@ -52,7 +52,7 @@ function Column({ column }) {
     height: '100%',
     opacity: isDragging ? 0.5 : undefined
   }
-  const [isLoadingCreate, setIsLoadingCreate] = useState(false)
+  // const [isLoadingCreate, setIsLoadingCreate] = useState(false)
 
   const [anchorEl, setAnchorEl] = React.useState(null)
   const open = Boolean(anchorEl)
@@ -74,20 +74,17 @@ function Column({ column }) {
   const [newCardTitle, setNewCardTitle] = useState('')
 
   const addNewCard = async () => {
-    setIsLoadingCreate(true)
     if (!newCardTitle) {
       toast.error('Please enter Card title', { position: 'bottom-right' })
       return
     }
+    // setIsLoadingCreate(true)
 
     // Tạo dữ liệu Card để gọi API
     const newCardData = {
       title: newCardTitle,
       columnId: column._id
     }
-    // Đóng trạng thái thêm Card mới & Clear Input
-    toggleOpenNewCardForm()
-    setNewCardTitle('')
 
     // Dùng Redux để có thể dùng API luôn ở đây
     // Gọi API tạo mới Card và làm lại dữ liệu State Board
@@ -118,7 +115,11 @@ function Column({ column }) {
 
     dispatch(updateCurrentActiveBoard(newBoard))
 
-    setIsLoadingCreate(false)
+    // Đóng trạng thái thêm Card mới & Clear Input
+    toggleOpenNewCardForm()
+    setNewCardTitle('')
+
+    // setIsLoadingCreate(false)
   }
 
   // Xóa Column và Cards bên trong nó
@@ -276,7 +277,7 @@ function Column({ column }) {
         <ListCards cards={orderedCards} />
 
         {/* Loading... create new card */}
-        {isLoadingCreate && <LoadingCreateCard />}
+        {/* {isLoadingCreate && <LoadingCreateCard />} */}
 
         {/* Box Column Footer */}
         <Box
@@ -353,6 +354,7 @@ function Column({ column }) {
                 sx={{ display: 'flex', alignItems: 'center', gap: 1 }}
               >
                 <Button
+                  className="interceptor-loading"
                   onClick={addNewCard}
                   variant="contained"
                   color="success"

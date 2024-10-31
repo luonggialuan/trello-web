@@ -132,7 +132,10 @@ function LoginForm() {
               <FieldErrorAlert errors={errors} fieldName={'password'} />
             </Box>
           </Box>
-          <CardActions sx={{ padding: '0 1em 1em 1em' }}>
+          <CardActions
+            className="interceptor-loading"
+            sx={{ padding: '0 1em 1em 1em' }}
+          >
             <Button
               type="submit"
               variant="contained"
