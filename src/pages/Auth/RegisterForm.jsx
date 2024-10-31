@@ -1,5 +1,5 @@
 // TrungQuanDev: https://youtube.com/@trungquandev
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import Avatar from '@mui/material/Avatar'
@@ -20,6 +20,8 @@ import {
   PASSWORD_CONFIRMATION_MESSAGE
 } from '~/utils/validators'
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
+import { registerUserAPI } from '~/api'
+import { toast } from 'react-toastify'
 
 function RegisterForm() {
   const {
@@ -28,8 +30,19 @@ function RegisterForm() {
     formState: { errors },
     watch
   } = useForm()
+  const navigate = useNavigate()
 
-  const submitRegister = (data) => {}
+  const submitRegister = (data) => {
+    const { email, password } = data
+
+    toast
+      .promise(registerUserAPI({ email, password }), {
+        pending: 'Registration is in processs...'
+      })
+      .then((user) => {
+        navigate(`/login?registeredEmail=${user.email}`)
+      })
+  }
   return (
     <form onSubmit={handleSubmit(submitRegister)}>
       <Zoom in={true} style={{ transitionDelay: '200ms' }}>
