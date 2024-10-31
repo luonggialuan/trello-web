@@ -104,19 +104,19 @@ function BoardBar({ board }) {
           }}
         >
           <Tooltip title="Avatar">
-            <Avatar alt="Avatar" src="/public/image-1.jpg" />
+            <Avatar alt="Avatar" src="/image-1.jpg" />
           </Tooltip>
           <Tooltip title="Avatar">
-            <Avatar alt="Avatar" src="/public/image-1.jpg" />
+            <Avatar alt="Avatar" src="/image-1.jpg" />
           </Tooltip>
           <Tooltip title="Avatar">
-            <Avatar alt="Avatar" src="/public/image-1.jpg" />
+            <Avatar alt="Avatar" src="/image-1.jpg" />
           </Tooltip>
           <Tooltip title="Avatar">
-            <Avatar alt="Avatar" src="/public/image-1.jpg" />
+            <Avatar alt="Avatar" src="/image-1.jpg" />
           </Tooltip>
           <Tooltip title="Avatar">
-            <Avatar alt="Avatar" src="/public/image-1.jpg" />
+            <Avatar alt="Avatar" src="/image-1.jpg" />
           </Tooltip>
         </AvatarGroup>
       </Box>

@@ -28,22 +28,19 @@ function ListColumns({ columns }) {
   const toggleOpenNewColumnForm = () => setOpenNewColumnForm(!openNewColumnForm)
 
   const [newColumnTitle, setNewColumnTitle] = useState('')
-  const [isLoadingCreate, setIsLoadingCreate] = useState(false)
+  // const [isLoadingCreate, setIsLoadingCreate] = useState(false)
 
   const addNewColumn = async () => {
-    setIsLoadingCreate(true)
     if (!newColumnTitle) {
       toast.error('Please enter column title')
       return
     }
+    // setIsLoadingCreate(true)
 
     // Tạo dữ liệu Column để gọi API
     const newColumnData = {
       title: newColumnTitle
     }
-    // Đóng trạng thái thêm Column mới & Clear Input
-    toggleOpenNewColumnForm()
-    setNewColumnTitle('')
 
     // Gọi API tạo mới Column và làm lại dữ liệu State Board
     const createdColumn = await createNewColumnAPI({
@@ -80,7 +77,11 @@ function ListColumns({ columns }) {
 
     dispatch(updateCurrentActiveBoard(newBoard))
 
-    setIsLoadingCreate(false)
+    // Đóng trạng thái thêm Column mới & Clear Input
+    toggleOpenNewColumnForm()
+    setNewColumnTitle('')
+
+    // setIsLoadingCreate(false)
   }
   // The <SortableContext> component requires that you pass it the sorted array of the unique identifiers associated to each sortable item via the items prop. This array should look like ["1", "2", "3"], not [{id: "1"}, {id: "2}, {id: "3}].
   // https://github.com/clauderic/dnd-kit/issues/183#issuecomment-812569512
@@ -105,7 +106,7 @@ function ListColumns({ columns }) {
         ))}
 
         {/* Loading... create new column */}
-        {isLoadingCreate && <LoadingCreateColumn />}
+        {/* {isLoadingCreate && <LoadingCreateColumn />} */}
 
         {/* Box Add new colum */}
         {!openNewColumnForm ? (
@@ -169,6 +170,7 @@ function ListColumns({ columns }) {
             />
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <Button
+                className="interceptor-loading"
                 onClick={addNewColumn}
                 variant="contained"
                 color="success"

@@ -35,7 +35,7 @@ function Profiles() {
             <Avatar
               sx={{ width: 36, height: 36 }}
               alt="luonggialuan"
-              src="/public/image-1.jpg"
+              src="/image-1.jpg"
             />
           </IconButton>
         </Tooltip>
