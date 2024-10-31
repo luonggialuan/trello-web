@@ -27,7 +27,6 @@ function LoginForm() {
   } = useForm()
 
   const submitLogIn = (data) => {
-    console.log('🐾 ~ file: LoginForm.jsx:24 ~ submitLogIn ~ data:', data)
   }
 
   return (

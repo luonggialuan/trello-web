@@ -54,7 +54,6 @@ authorizeAxiosInstance.interceptors.response.use(
     interceptorLoadingElements(false)
 
     // * Xử lý lỗi tập trung từ API gửi về
-    console.log('🐾 ~ file: authorizeAxios.js:39 ~ error:', error)
 
     let errorMessage = error?.message
 

@@ -29,9 +29,7 @@ function RegisterForm() {
     watch
   } = useForm()
 
-  const submitRegister = (data) => {
-    console.log('🐾 ~ file: RegisterForm.jsx:31 ~ submitRegister ~ data:', data)
-  }
+  const submitRegister = (data) => {}
   return (
     <form onSubmit={handleSubmit(submitRegister)}>
       <Zoom in={true} style={{ transitionDelay: '200ms' }}>
