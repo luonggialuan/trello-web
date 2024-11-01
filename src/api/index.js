@@ -82,7 +82,7 @@ export const registerUserAPI = async (data) => {
 }
 
 export const verifyUserAPI = async (data) => {
-  const response = await authorizeAxiosInstance.post(
+  const response = await authorizeAxiosInstance.put(
     `${API_ROOT}/v1/users/verify`,
     data
   )
