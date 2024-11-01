@@ -1,18 +1,32 @@
 import Board from '~/pages/Boards/_id'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, Outlet } from 'react-router-dom'
 import NotFound from './pages/404/NotFound'
 import Auth from './pages/Auth/Auth'
 import AccountVerification from './pages/Auth/AccountVerification'
+import { useSelector } from 'react-redux'
+import { selectCurrentUser } from '~/redux/user/userSlice'
+
+// https://reactrouter.com/en/main/components/outlet
+// https://www.robinwieruch.de/react-router-private-routes/
+const ProtectedRoute = ({ user }) => {
+  if (!user) return <Navigate to="/login" replace={true} />
+  // * Renders the child route's element, if there is one.
+  return <Outlet /> // children
+}
 
 function App() {
+  const currentUser = useSelector(selectCurrentUser)
+
   return (
     <Routes>
       <Route
         path="/"
         element={<Navigate to="/boards/65e4bccab2843add9c21af92" />}
       />
-      {/* Board Details */}
-      <Route path="/boards/:boardId" element={<Board />} />
+      <Route element={<ProtectedRoute user={currentUser} />}>
+        {/* Board Details */}
+        <Route path="/boards/:boardId" element={<Board />} />
+      </Route>
 
       {/* Authentication */}
       <Route path="/login" element={<Auth />} />
