@@ -1,6 +1,17 @@
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { interceptorLoadingElements } from './formatters'
+import { refreshTokenAPI } from '~/api'
+import { logoutUserAPI } from '~/redux/user/userSlice'
+
+// https://redux.js.org/faq/code-structure#how-can-i-use-the-redux-store-in-non-component-files
+// * How can I use the Redux store in non-component files?
+
+let axiosReduxStore
+
+export const injectStore = (mainStore) => {
+  axiosReduxStore = mainStore
+}
 
 const TIMEOUT = 1000 * 60 * 10 // * 10 phút
 const STATUS_CODE_REFRESH_TOKEN = 410
@@ -34,6 +45,11 @@ authorizeAxiosInstance.interceptors.request.use(
   }
 )
 
+// https://www.thedutchlab.com/insights/using-axios-interceptors-for-refreshing-your-api-token
+// * Using Axios interceptors for refreshing your API token.
+// Gọi refresh-token xong retry lại api
+let refreshTokenPromise = null
+
 // Add a response interceptor
 authorizeAxiosInstance.interceptors.response.use(
   (response) => {
@@ -52,6 +68,42 @@ authorizeAxiosInstance.interceptors.response.use(
 
     // * Kỹ thuật chặn spam click
     interceptorLoadingElements(false)
+
+    // Xử lý refresh token tự động
+    // Case 1: 403 --> logout
+    // if (error.response?.status === 403) {
+    //   axiosReduxStore.dispatch(logoutUserAPI(false))
+    // }
+
+    // Case 2: 410 --> call refresh-token --> generate new access token
+    // Get error request API through error.config
+    const originalRequests = error.config
+
+    if (
+      error.response?.status === STATUS_CODE_REFRESH_TOKEN &&
+      originalRequests
+    ) {
+      if (!refreshTokenPromise) {
+        refreshTokenPromise = refreshTokenAPI()
+          .then((data) => {
+            return data?.accessToken
+          })
+          .catch((_error) => {
+            // Case 1 --> logout
+            axiosReduxStore.dispatch(logoutUserAPI(false))
+            return Promise.reject(_error)
+          })
+          .finally(() => {
+            refreshTokenPromise = null
+          })
+      }
+
+      // eslint-disable-next-line no-unused-vars
+      return refreshTokenPromise.then((accessToken) => {
+        // Can use accessToken to do something based on case study
+        return authorizeAxiosInstance(originalRequests)
+      })
+    }
 
     // * Xử lý lỗi tập trung từ API gửi về
 
