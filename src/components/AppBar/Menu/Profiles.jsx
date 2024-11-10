@@ -14,6 +14,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { selectCurrentUser } from '~/redux/user/userSlice'
 import { logoutUserAPI } from '~/redux/user/userSlice'
 import { useConfirm } from 'material-ui-confirm'
+import { Link } from 'react-router-dom'
 
 function Profiles() {
   const [anchorEl, setAnchorEl] = React.useState(null)
@@ -31,7 +32,7 @@ function Profiles() {
   const confirmLogout = useConfirm()
   const handleLogout = () => {
     confirmLogout({
-      title: 'Log out of yout account?',
+      title: 'Log out of your account?',
       confirmationText: 'Confirm',
       cancellationText: 'Cancel'
     })
@@ -95,19 +96,21 @@ function Profiles() {
           transformOrigin={{ horizontal: 'right', vertical: 'top' }}
           anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
-          <MenuItem
-            sx={{
-              '&:hover': { color: 'success.light' }
-            }}
-            onClick={handleClose}
-          >
-            <Avatar
-              sx={{ width: 28, height: 28, mr: 2 }}
-              alt="avatar-profile"
-              src={currentUser?.avatar}
-            />{' '}
-            Profile
-          </MenuItem>
+          <Link to="/settings/account" style={{ color: 'inherit' }}>
+            <MenuItem
+              sx={{
+                '&:hover': { color: 'success.light' }
+              }}
+              onClick={handleClose}
+            >
+              <Avatar
+                sx={{ width: 28, height: 28, mr: 2 }}
+                alt="avatar-profile"
+                src={currentUser?.avatar}
+              />{' '}
+              Profile
+            </MenuItem>
+          </Link>
           <Divider />
           <MenuItem onClick={handleClose}>
             <ListItemIcon>
