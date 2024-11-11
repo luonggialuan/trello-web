@@ -6,7 +6,6 @@ import MenuItem from '@mui/material/MenuItem'
 import Divider from '@mui/material/Divider'
 import ListItemText from '@mui/material/ListItemText'
 import ListItemIcon from '@mui/material/ListItemIcon'
-import Typography from '@mui/material/Typography'
 import ContentCopy from '@mui/icons-material/ContentCopy'
 import ContentPaste from '@mui/icons-material/ContentPaste'
 import Cloud from '@mui/icons-material/Cloud'
@@ -23,13 +22,14 @@ import CloseIcon from '@mui/icons-material/Close'
 import { toast } from 'react-toastify'
 import { useConfirm } from 'material-ui-confirm'
 import LoadingCreateCard from './ListCards/Card/LoadingCreateCard'
-import { createNewCardAPI, deleteColumnAPI } from '~/api'
+import { createNewCardAPI, deleteColumnAPI, updateColumnDetailAPI } from '~/api'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   selectCurrentActiveBoard,
   updateCurrentActiveBoard
 } from '~/redux/activeBoard/activeBoardSlice'
 import { cloneDeep } from 'lodash'
+import ToggleFocusInput from '~/components/Form/ToggleFocusInput'
 
 function Column({ column }) {
   const dispatch = useDispatch()
@@ -162,6 +162,19 @@ function Column({ column }) {
       .catch(() => {})
   }
 
+  const onUpdateColumnTitle = (newTitle) => {
+    // Gọi API update Column và xử lý dữ liệu board trong redux
+    updateColumnDetailAPI(column._id, { title: newTitle }).then(() => {
+      const newBoard = cloneDeep(board)
+      const columnToUpdate = newBoard.columns.find((c) => c._id === column._id)
+
+      if (columnToUpdate) {
+        columnToUpdate.title = newTitle
+      }
+      dispatch(updateCurrentActiveBoard(newBoard))
+    })
+  }
+
   return (
     <div ref={setNodeRef} style={dndKitColumnStyles} {...attributes}>
       <Box
@@ -188,7 +201,7 @@ function Column({ column }) {
             justifyContent: 'space-between'
           }}
         >
-          <Typography
+          {/* <Typography
             variant="h6"
             sx={{
               fontSize: '1rem',
@@ -197,7 +210,12 @@ function Column({ column }) {
             }}
           >
             {column?.title}
-          </Typography>
+          </Typography> */}
+          <ToggleFocusInput
+            value={column?.title}
+            onChangedValue={onUpdateColumnTitle}
+            data-no-dnd="true"
+          />
           <Box>
             <Tooltip title="More options">
               <ExpandMoreIcon
