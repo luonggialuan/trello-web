@@ -280,6 +280,7 @@ function BoardContent({
           'handleDragEnd'
         )
       } else {
+        if (active.id === over.id) return
         // Hành động kéo thả card trong cùng một column
         // Get old index of active
         const oldCardIndex = oldColumnDraggingCard?.cards?.findIndex(
