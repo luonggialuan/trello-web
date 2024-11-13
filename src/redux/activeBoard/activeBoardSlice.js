@@ -49,6 +49,8 @@ export const activeBoardSlice = createSlice({
         if (card) {
           // card.title = updatedCard.title
           // // card['title'] = updatedCard['title']
+
+          // Bất kỳ trường nào trong card update thì card trong board cũng update theo
           Object.keys(updatedCard).forEach((key) => {
             card[key] = updatedCard[key]
           })
