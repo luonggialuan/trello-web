@@ -15,7 +15,7 @@ import {
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
 import { inviteUserToBoardAPI } from '~/api'
 import { toast } from 'react-toastify'
-import { socketIoInstance } from '~/main'
+import { socketIoInstance } from '~/socketClient'
 
 function InviteBoardUser({ boardId }) {
   /**
