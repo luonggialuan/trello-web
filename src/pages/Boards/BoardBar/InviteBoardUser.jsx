@@ -15,6 +15,7 @@ import {
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
 import { inviteUserToBoardAPI } from '~/api'
 import { toast } from 'react-toastify'
+import { socketIoInstance } from '~/main'
 
 function InviteBoardUser({ boardId }) {
   /**
@@ -46,7 +47,8 @@ function InviteBoardUser({ boardId }) {
       if (!res.error) {
         toast.success('Invite user successfully!')
         // Gửi thông báo tới người dùng (real-time)
-        //...
+        // emit --> gửi sự kiện socket lên server
+        socketIoInstance.emit('FE_USER_INVITED_TO_BOARD', res)
       }
     })
   }
