@@ -1,21 +1,9 @@
-### Bộ code base để bắt đầu học khóa MERN Stack Pro (HỌC PHẦN FRONT-END: REACTJS - MATERIAL UI - REDUX...vv) - Lập Trình qua dự án thực tế Trello Clone trên YouTube của mình nhé các bạn!
-### Base project for my MERN Stack Pro Course - Build Trello App on YouTube!
+# Project Overview
 
-- Playlist hướng dẫn chi tiết từ A-Z: https://www.youtube.com/playlist?list=PLP6tw4Zpj-RJP2-YrhtkWqObMQ-AA4TDy
+**Trello Clone with MERN Stack** là dự án cá nhân của tôi, được xây dựng nhằm tái hiện một số tính năng của ứng dụng Trello thông qua công nghệ MERN (MongoDB, Express, React, Node.js). Dự án này được thực hiện trong quá trình tự học và mở rộng kiến thức từ một khóa học MERN Stack Pro trên YouTube, với mục tiêu áp dụng những best practices trong xây dựng RESTful API và ứng dụng full-stack.
 
-- Link Download Full Source Code hoàn chỉnh của bộ này và ủng hộ mình (Vui lòng đọc phần mô tả ở bất kỳ video nào trong Playlist MERN Stack để hiểu tại sao có 2 link bên dưới)
 
-- 🤝 Get Full Source Code for this Course here and support me 🍀
-
-- 🎁 on Ko-fi: https://ko-fi.com/s/e41c325ca4
-
-- 🎁 on Buy Me a Coffee: https://www.buymeacoffee.com/codetq/e/191152
-
-### Hướng dẫn clone Repo code này về máy các bạn chuẩn nhất ở đây nhé:
-
-- Link: https://youtu.be/lUfsTj45Uys
-
-### Requirements - Thông tin của bộ Code Base này - Chuẩn các phiên bản dưới đây để bắt đầu học: (Semantic Versioning)
+### Requirements
 
 ```
 * nodejs = v18.16.0
@@ -36,20 +24,11 @@
 * "eslint-plugin-react-refresh": "^0.3.4"
 ```
 
-### About Me - Thông tin về mình:
+### Thông tin về tác giả:
 
-Author: **Trungquandev - Một Lập Trình Viên** & **CodeTQ**
+Author: **Trungquandev - Một Lập Trình Viên**
 
 Blog: https://trungquandev.com/
 
-CV: https://cv.trungquandev.com/
-
 YouTube 01 (Trungquandev - Một Lập Trình Viên): https://www.youtube.com/@trungquandev
 
-YouTube 02 (CodeTQ): https://www.youtube.com/@code-tq
-
-"Learning new everyday not the copycat of yesterday!"
-
-"A bit of fragrance clings to the hand that gives flowers!"
-
-Thanks for watching!
